@@ -35,18 +35,22 @@ export default function Home() {
   };
 
   const addAddressToWhitelist = async () => {
-    const signer = await getProviderOrSigner(true);
-    const whitelistContract = new Contract(
-      WHITELIST_CONTRACT_ADDRESS,
-      abi,
-      signer
-    );
-    const tx = await whitelistContract.addAddressesToWhitelist();
-    setLoading(true);
-    await tx.wait();
-    setLoading(false);
-    await getNumberOfWhitelisted();
-    setJoinedWhitelist(true);
+    try {
+      const signer = await getProviderOrSigner(true);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const tx = await whitelistContract.addAddressesToWhitelist();
+      setLoading(true);
+      await tx.wait();
+      setLoading(false);
+      await getNumberOfWhitelisted();
+      setJoinedWhitelist(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const checkIfAddressIsWhitelisted = async () => {
