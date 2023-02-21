@@ -14,24 +14,23 @@ export default function Home() {
   const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
-    try {
-      const provider = await web3ModalRef.current.connect();
-      const web3Provider = new providers.web3Provider(provider);
+    // Connect to Metamask
+    // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
+    const provider = await web3ModalRef.current.connect();
+    const web3Provider = new providers.Web3Provider(provider);
 
-      const { chainID } = await web3Provider.getNetwork();
-      if (chainID !== 5) {
-        window.alert("Change network to Goerli");
-        throw new Error("Change network to Goerli");
-      }
-      if (needSigner) {
-        const signer = web3Provider.getSigner();
-        return signer;
-      }
-
-      return web3Provider;
-    } catch (error) {
-      console.error(error);
+    // If user is not connected to the Rinkeby network, let them know and throw an error
+    const { chainId } = await web3Provider.getNetwork();
+    if (chainId !== 5) {
+      window.alert("Change the network to Rinkeby");
+      throw new Error("Change network to Rinkeby");
     }
+
+    if (needSigner) {
+      const signer = web3Provider.getSigner();
+      return signer;
+    }
+    return web3Provider;
   };
 
   const addAddressToWhitelist = async () => {
@@ -47,6 +46,8 @@ export default function Home() {
       await tx.wait();
       setLoading(false);
       await getNumberOfWhitelisted();
+      const numWhitelisted = await whitelistContract.getNumWhitelisted();
+      setNumOfWhitelised(numWhitelisted);
       setJoinedWhitelist(true);
     } catch (error) {
       console.error(error);

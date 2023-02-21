@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 contract Whitelist {
     //maximum number of addresses that can be whitelisted
-    uint8 maxWhitelistedAddresses;
+    uint8 public maxWhitelistedAddresses;
 
     //no of whitelisted addresses till now
     uint8 public numAddressesWhitelisted;
@@ -26,5 +26,9 @@ contract Whitelist {
         //Add user to the whitelist if not already there
         whitelistedAddresses[msg.sender] = true;
         numAddressesWhitelisted++;
+    }
+
+    function getNumWhitelisted() public view returns (uint8) {
+        return numAddressesWhitelisted;
     }
 }
