@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   const addAddressToWhitelist = async () => {
-    const signer = getProviderOrSigner(true);
+    const signer = await getProviderOrSigner(true);
     const whitelistContract = new Contract(
       WHITELIST_CONTRACT_ADDRESS,
       abi,
