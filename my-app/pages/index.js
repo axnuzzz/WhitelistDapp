@@ -73,7 +73,7 @@ export default function Home() {
 
   const getNumberOfWhitelisted = async () => {
     try {
-      const provider = getProviderOrSigner();
+      const signer = getProviderOrSigner();
       const whitelistContract = new Contract(
         WHITELIST_CONTRACT_ADDRESS,
         abi,
